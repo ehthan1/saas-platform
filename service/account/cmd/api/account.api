@@ -1,0 +1,79 @@
+info(
+	title: "账户"
+	desc: "账户管理系统"
+	author: "portgas"
+	email: "xxuechin@gmail.com"
+	version: "1.0"
+)
+
+type (
+	AccountReply {
+		Account  string `json:"account"`
+		NickName string `json:"nick_name"`
+		JwtToken
+	}
+
+	JwtToken {
+		AccessToken  string `json:"access_token,omitempty"`
+		AccessExpire int64  `json:"access_expire,omitempty"`
+	}
+
+	LoginRequest {
+		Account  string `json:"account"`
+		Password string `json:"password"`
+	}
+
+	AccountInfoResponse {
+		AccountReply
+	}
+
+	LoginResponse {
+		AccountReply
+	}
+
+	RegisterRequest {
+		Account  string `json:"account"`
+		Mobile   string `json:"mobile"`
+		NickName string `json:"nick_name"`
+		Password string `json:"password"`
+	}
+
+	RegisterResponse {
+		AccountReply
+	}
+)
+@server (
+	group: account
+)
+
+service account-api {
+	@doc(
+		summary: "账户登录"
+	)
+	@handler login
+	post /account/login (LoginRequest) returns (LoginResponse)
+	@doc(
+		summary: "账户注册"
+	)
+	@handler register
+	post /account/register (RegisterRequest) returns (RegisterResponse)
+}
+
+@server(
+	middleware: Jwt, Casbin
+	group: account
+)
+
+service account-api {
+	@doc(
+		summary: "账户信息"
+	)
+	@handler Accountinfo // 账户信息
+	post /account/accountinfo returns(AccountInfoResponse)
+	
+	@doc(
+		summary: "账户信息"
+	)
+	@handler RefreshToken // 刷新Token有效期
+	post /account/refresh returns(JwtToken)
+}

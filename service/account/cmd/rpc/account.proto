@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package account;
+
+option go_package = "account";
+
+message PingRequest {
+  string ping = 1;
+}
+
+message PingResponse {
+  string pong = 1;
+}
+
+message LoginRequest {
+  string Account = 1;
+  string Password = 2;
+}
+
+message RegisterRequest {
+  string Account = 1;
+  string Password = 2;
+  string Nickname = 3;
+}
+
+message AccountInfoRequest {
+  string AcountID = 1;
+}
+
+message Response {
+  string UUID = 1;
+  string  Account = 2;
+  string  NickName = 3;
+}
+
+message CreateAccountRequest {
+  string Account = 1;
+  string Password = 2;
+  string Mobile = 3;
+}
+
+message CreateAccountResponse {
+  int64 Id = 1;
+}
+
+message GetAccountRequest {
+  int64 Id = 1;
+}
+
+message GetAccountResponse {
+  int64 Id = 1;
+  string Account = 2;
+  int64 Status = 3;
+  string Mobile = 4;
+  string Nickname = 5;
+  string Birthdate = 6;
+  string Gender = 7;
+  string Realname = 8;
+}
+
+service Account {
+  rpc Login(LoginRequest) returns(Response);
+  rpc Register(RegisterRequest) returns(Response);
+
+  rpc getAccount(GetAccountRequest) returns(GetAccountResponse);
+  rpc createAccount(CreateAccountRequest) returns(CreateAccountResponse);
+}

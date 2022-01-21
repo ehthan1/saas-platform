@@ -1,0 +1,219 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "账户",
+    "description": "账户管理系统",
+    "version": "1.0"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/account/accountinfo": {
+      "post": {
+        "summary": "账户信息",
+        "operationId": "Accountinfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/AccountInfoResponse"
+            }
+          }
+        },
+        "tags": [
+          "account-api"
+        ]
+      }
+    },
+    "/account/login": {
+      "post": {
+        "summary": "账户登录",
+        "operationId": "login",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/LoginResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LoginRequest"
+            }
+          }
+        ],
+        "tags": [
+          "account-api"
+        ]
+      }
+    },
+    "/account/register": {
+      "post": {
+        "summary": "账户注册",
+        "operationId": "register",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RegisterResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RegisterRequest"
+            }
+          }
+        ],
+        "tags": [
+          "account-api"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "AccountInfoResponse": {
+      "type": "object",
+      "properties": {
+        "": {
+          "$ref": "#/definitions/AccountReply"
+        }
+      },
+      "title": "AccountInfoResponse"
+    },
+    "AccountReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "account": {
+          "type": "string"
+        },
+        "nick_name": {
+          "type": "string"
+        },
+        "": {
+          "$ref": "#/definitions/JwtToken"
+        }
+      },
+      "title": "AccountReply",
+      "required": [
+        "id",
+        "account",
+        "nick_name"
+      ]
+    },
+    "JwtToken": {
+      "type": "object",
+      "properties": {
+        "accessToken": {
+          "type": "string"
+        },
+        "accessExpire": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "refreshAfter": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "JwtToken",
+      "required": [
+        "accessToken",
+        "accessExpire",
+        "refreshAfter"
+      ]
+    },
+    "LoginRequest": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "title": "LoginRequest",
+      "required": [
+        "account",
+        "password"
+      ]
+    },
+    "LoginResponse": {
+      "type": "object",
+      "properties": {
+        "": {
+          "$ref": "#/definitions/AccountReply"
+        }
+      },
+      "title": "LoginResponse"
+    },
+    "RegisterRequest": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "type": "string"
+        },
+        "mobile": {
+          "type": "string"
+        },
+        "nick_name": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "title": "RegisterRequest",
+      "required": [
+        "account",
+        "mobile",
+        "nick_name",
+        "password"
+      ]
+    },
+    "RegisterResponse": {
+      "type": "object",
+      "properties": {
+        "": {
+          "$ref": "#/definitions/AccountReply"
+        }
+      },
+      "title": "RegisterResponse"
+    }
+  },
+  "securityDefinitions": {
+    "apiKey": {
+      "type": "apiKey",
+      "description": "Enter JWT Bearer token **_only_**",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      "apiKey": []
+    }
+  ]
+}
