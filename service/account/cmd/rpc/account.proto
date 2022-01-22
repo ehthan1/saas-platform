@@ -27,7 +27,7 @@ message AccountInfoRequest {
   string AcountID = 1;
 }
 
-message Response {
+message AccountResponse {
   string UUID = 1;
   string  Account = 2;
   string  NickName = 3;
@@ -58,10 +58,64 @@ message GetAccountResponse {
   string Realname = 8;
 }
 
+message CreateMenuReq {
+  int64 Id = 1;
+  string Name=2;
+  int64 ParentID=3;
+  string ParentPath=4;
+  int64 Status=5;
+  string Icon=6;
+}
+
+message Response {
+  int64 Status = 1;
+}
+
+message Request {
+  int64 Id = 1;
+}
+
+message GetMenuRes {
+  int64 Id = 1;
+  string Name=2;
+  int64 ParentID=3;
+  string ParentPath=4;
+  int64 Status=5;
+  string Icon=6;
+}
+message GetMenusRes {
+  int64 Id = 1;
+  string Name=2;
+  int64 ParentID=3;
+  string ParentPath=4;
+  int64 Status=5;
+  string Icon=6;
+  repeated Children GetMenuRes = 7;
+}
+
 service Account {
-  rpc Login(LoginRequest) returns(Response);
-  rpc Register(RegisterRequest) returns(Response);
+  rpc Login(LoginRequest) returns(AccountResponse);
+  rpc Register(RegisterRequest) returns(AccountResponse);
 
   rpc getAccount(GetAccountRequest) returns(GetAccountResponse);
   rpc createAccount(CreateAccountRequest) returns(CreateAccountResponse);
+
+  rpc createAccount(CreateMenuReq) returns(Response);
+  rpc removeAccount(Request) returns(Response);
+  rpc getAccount(Request) returns(GetMenuRes);
+  rpc getAccounts(Request) returns(GetMenusRes);
+  rpc updateAccount() returns();
+
+
+  rpc creatMenu(CreateMenuReq) returns(Response);
+  rpc removeMenu(Request) returns(Response);
+  rpc getMenu(Request) returns(GetMenuRes);
+  rpc getMenus(Request) returns(GetMenusRes);
+  rpc updateMenu() returns();
+
+  rpc createRole() returns(Response);
+  rpc getRoles(Request) returns();
+  rpc getRole(Request) returns();
+  rpc removeRole(Request) returns(Response);
+  rpc updateRole() returns();
 }

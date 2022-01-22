@@ -28,5 +28,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		panic(err)
 	}
 	db.AutoMigrate(&model.Account{})
+
 	return &ServiceContext{Config: c, Db: db}
 }

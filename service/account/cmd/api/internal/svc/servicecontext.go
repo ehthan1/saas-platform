@@ -11,7 +11,6 @@ import (
 type ServiceContext struct {
 	Config     config.Config
 	AccountRpc accountclient.Account
-	Casbin     rest.Middleware
 	Jwt        rest.Middleware
 	JwtObject  *middleware.JwtMiddleware
 }
@@ -20,8 +19,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	return &ServiceContext{
 		Config:     c,
 		AccountRpc: accountclient.NewAccount(zrpc.MustNewClient(c.AccountRpc)),
-
-		Casbin: middleware.NewCasbinMiddleware().Handle,
-		Jwt:    middleware.NewJwtMiddleware(c).Handle,
+		Jwt:        middleware.NewJwtMiddleware(c).Handle,
 	}
 }
